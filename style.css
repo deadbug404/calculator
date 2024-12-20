@@ -35,6 +35,16 @@ body,html{
     height: 60%;
     border: 2px solid #FFFFFF;
     border-radius: 10px;
+    display: flex;
+    padding: 10px;
+    justify-content: end;
+    align-items: end;
+}
+
+#screen #result{
+    margin: 0;
+    font-size: 30px;
+    color:white;
 }
 
 .row{
@@ -42,7 +52,7 @@ body,html{
     display: flex;
 }
 
-.column{
+.key{
     display: flex;
     color: white;
     justify-content: center;
@@ -55,7 +65,7 @@ body,html{
     box-shadow: 0 5px black;
 }
 
-.column:active {
+.key:active {
     opacity: 0.8;
     box-shadow: 0 1px black;
     transform: translateY(4px);
