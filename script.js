@@ -40,32 +40,49 @@ function sendNumberInput(e){
 }
 
 function sendOperationInput(e){
-    isNextNumber = true;
-    let currentNumber = result.textContent;
-    let operator = e.target.textContent
-    let total = 0;
 
-    if(operator == "c"){
-        result.textContent = "0";
-        resetInternalValues;
-    }else if(operator == "="){
-        total = operate(Number(previousNumber),Number(currentNumber),currentOperation);
-        result.textContent = total;
-        resetInternalValues();
-    }else{
-        if(previousNumber !== 0 && currentOperation !== "" && operator !== currentOperation){
-            total = operate(Number(previousNumber),Number(currentNumber),currentOperation);
-            result.textContent = total;
-            previousNumber = total;
-            currentOperation =  operator
+    if(!(isNextNumber)){
+        isNextNumber = true;
+        let currentNumber = result.textContent;
+        let operator = e.target.textContent
+        let total = 0;
+
+        if(isSpecialOperator(operator)){
+            specialOperation(operator,currentNumber);
         }else{
-            previousNumber = result.textContent;
-            currentOperation = operator;
+            if(previousNumber !== 0 && currentOperation !== ""){
+                total = operate(Number(previousNumber),Number(currentNumber),currentOperation);
+                result.textContent = total;
+                previousNumber = total;
+                currentOperation =  operator
+            }else{
+                previousNumber = result.textContent;
+                currentOperation = operator;
+            }
         }
     }
 
     console.log(`previousNumber: ${previousNumber}`);
 
+}
+
+function isSpecialOperator(operator){
+    return (operator == "c" || operator == "=");
+}
+
+function specialOperation(operator, currentNumber){
+    switch(operator){
+        case "c":
+            result.textContent = "0";
+            resetInternalValues();
+            break
+        case "=":
+            total = operate(Number(previousNumber),Number(currentNumber),currentOperation);
+            result.textContent = total;
+            isNextNumber = false;
+            resetInternalValues();
+            break
+    }
 }
 
 function operate(num1,num2,operator){
@@ -90,7 +107,7 @@ function substract(num1,num2){
 }
 
 function divide(num1,num2){
-    return num1 / num2;
+    return num2 == 0 ?  "0" :  num1/num2;
 }
 
 function multiply(num1,num2){
@@ -104,3 +121,4 @@ function getNumberOnScreen(){
 
 const calculatorKeys = Array.from(document.querySelectorAll(".key"));
 calculatorKeys.forEach(key => key.classList.contains("number") ? key.addEventListener("click", sendNumberInput) : key.addEventListener("click", sendOperationInput));
+
